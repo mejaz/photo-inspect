@@ -8,6 +8,11 @@ export default function FileUpload({setOriginalImage, processing, setProcessing,
 		if (e.target.files) {
 			let file = e.target.files[0]
 
+			// if no file, just return
+			if (!file) {
+				return
+			}
+
 			// check if the uploaded file is an image
 			if (!(file.type.startsWith('image/'))) {
 				toast.error('Only image files are allowed')
@@ -19,6 +24,7 @@ export default function FileUpload({setOriginalImage, processing, setProcessing,
 			reader.onload = () => {
 				setFile(file);
 				setOriginalImage(reader.result)
+				setLabels([])
 			}
 			reader.readAsDataURL(file)
 		}
@@ -34,7 +40,7 @@ export default function FileUpload({setOriginalImage, processing, setProcessing,
 		const formData = new FormData();
 		formData.append('file', file);
 
-		// 👇 Uploading the file using the fetch API to the server
+		// Uploading the file using the fetch API to the server
 		let response = await fetch('/api/process', {
 			method: 'POST',
 			body: formData
@@ -43,6 +49,7 @@ export default function FileUpload({setOriginalImage, processing, setProcessing,
 			response = await response.json()
 			setLabels(response.labels)
 			setProcessing(false)
+			console.log('--response.labels--', response.labels)
 		} else {
 			response = await response.json()
 			setProcessing(false)

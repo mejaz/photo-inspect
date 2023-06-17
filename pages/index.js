@@ -34,7 +34,7 @@ export default function Home() {
 								<img
 									src={originalImage}
 									alt="newImage"
-									style={{maxWidth: "100%", marginBottom: "10px"}}
+									style={{width: "100%", marginBottom: "10px"}}
 								/>
 								{labels.map((label) => (
 									label.Instances && label.Instances.map((instance, index) => (
